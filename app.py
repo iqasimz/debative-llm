@@ -19,24 +19,10 @@ PHRASE_KEYWORDS  = {"given that", "only when"}
 
 @st.cache_resource
 def load_models():
-    c_tok = DistilBertTokenizerFast.from_pretrained(
-        "models/role_student_v2_highconf",
-        local_files_only=True
-    )
-    c_mod = DistilBertForSequenceClassification.from_pretrained(
-        "models/role_student_v2_highconf",
-        local_files_only=True
-    ).eval()
-
-    r_tok = BertTokenizerFast.from_pretrained(
-        "models/relation_teacher_aug",
-        local_files_only=True
-    )
-    r_mod = BertForSequenceClassification.from_pretrained(
-        "models/relation_teacher_aug",
-        local_files_only=True
-    ).eval()
-
+    c_tok = DistilBertTokenizerFast.from_pretrained("models/role_student_v2_highconf", local_files_only=True)
+    c_mod = DistilBertForSequenceClassification.from_pretrained("models/role_student_v2_highconf", local_files_only=True).eval()
+    r_tok = BertTokenizerFast.from_pretrained("models/relation_teacher_aug", local_files_only=True)
+    r_mod = BertForSequenceClassification.from_pretrained("models/relation_teacher_aug", local_files_only=True).eval()
     return (c_tok, c_mod), (r_tok, r_mod)
 
 (claim_tok, claim_mod), (rel_tok, rel_mod) = load_models()
@@ -50,7 +36,7 @@ if st.button("Analyze"):
         st.error("Need at least one sentence.")
         st.stop()
 
-    # — Claim/Premise with softmax scores & improved heuristic —
+    # — Claim/Premise with softmax scores & improved heuristics —
     enc    = claim_tok(sentences, padding=True, truncation=True, return_tensors="pt")
     with torch.no_grad():
         outputs = claim_mod(**enc)
@@ -69,11 +55,11 @@ if st.button("Analyze"):
         low    = sent.lower()
         tokens = re.findall(r"\b\w+\b", low)
 
-        # a) existing premise-keyword check
+        # a) premise-keyword check
         cond_keyword = any(kw in tokens for kw in PREMISE_KEYWORDS) \
                     or any(ph in low for ph in PHRASE_KEYWORDS)
 
-        # b) robust subordinate-clause detection (requires comma)
+        # b) subordinate-clause detection (requires comma)
         has_comma_after = "," in low.split(" ", 1)[1] if " " in low else False
         cond_subord    = low.startswith(("when ", "if ", "although ")) and has_comma_after
 
@@ -83,8 +69,11 @@ if st.button("Analyze"):
         # d) only when/although without comma stay Claim
         cond_exception = low.startswith(("when ", "although ")) and not has_comma_after
 
+        # e) data-statement override: bare stats (e.g. “15% drop”) without subordinators → Claim
+        cond_data      = bool(re.search(r'\b\d+%?\b', low)) and not (cond_subord or cond_if_then or cond_keyword)
+
         # final label adjustment
-        if cond_exception:
+        if cond_exception or cond_data:
             label = "Claim"
         elif cond_if_then or (label == "Claim" and (cond_keyword or cond_subord)):
             label = "Premise"
