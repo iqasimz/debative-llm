@@ -1,4 +1,7 @@
 # .gitignore
+models/*
+!models/role_student_v2_highconf/
+!models/relation_teacher_aug/
 data/
 __pycache__/
 *.pyc
@@ -19,8 +22,5 @@ is/
 now/
 python/
 3.8/
-models/
 checkpoints/
 !requirements.txt
-!models/role_student_v2_highconf/
-!models/relation_teacher_aug/
