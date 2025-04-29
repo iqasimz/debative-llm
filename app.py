@@ -19,10 +19,24 @@ PHRASE_KEYWORDS  = {"given that", "only when"}
 
 @st.cache_resource
 def load_models():
-    c_tok = DistilBertTokenizerFast.from_pretrained("models/role_student_v2_highconf")
-    c_mod = DistilBertForSequenceClassification.from_pretrained("models/role_student_v2_highconf").eval()
-    r_tok = BertTokenizerFast.from_pretrained("models/relation_teacher_aug")
-    r_mod = BertForSequenceClassification.from_pretrained("models/relation_teacher_aug").eval()
+    c_tok = DistilBertTokenizerFast.from_pretrained(
+        "models/role_student_v2_highconf",
+        local_files_only=True
+    )
+    c_mod = DistilBertForSequenceClassification.from_pretrained(
+        "models/role_student_v2_highconf",
+        local_files_only=True
+    ).eval()
+
+    r_tok = BertTokenizerFast.from_pretrained(
+        "models/relation_teacher_aug",
+        local_files_only=True
+    )
+    r_mod = BertForSequenceClassification.from_pretrained(
+        "models/relation_teacher_aug",
+        local_files_only=True
+    ).eval()
+
     return (c_tok, c_mod), (r_tok, r_mod)
 
 (claim_tok, claim_mod), (rel_tok, rel_mod) = load_models()
