@@ -9,6 +9,9 @@ models/*
 # Within each allowed dir, ignore everything
 models/role_student_v2_highconf/*
 models/relation_teacher_aug/*
+# allow weight files just this one time
+!models/role_student_v2_highconf/*.safetensors
+!models/relation_teacher_aug/*.safetensors
 
 # Except these five files in each
 !models/role_student_v2_highconf/config.json
