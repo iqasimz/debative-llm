@@ -22,3 +22,5 @@ python/
 models/
 checkpoints/
 !requirements.txt
+!models/role_student_v2_highconf/
+!models/relation_teacher_aug/
