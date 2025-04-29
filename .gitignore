@@ -22,7 +22,8 @@ models/relation_teacher_aug/*
 !models/relation_teacher_aug/tokenizer_config.json
 !models/relation_teacher_aug/vocab.txt
 !models/relation_teacher_aug/special_tokens_map.json
-
+# ignore stray pip-internal directories
+lib/
 data/
 __pycache__/
 *.pyc
