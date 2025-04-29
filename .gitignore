@@ -2,6 +2,10 @@
 models/*
 !models/role_student_v2_highconf/
 !models/relation_teacher_aug/
+!models/role_student_v2_highconf/*.json
+!models/role_student_v2_highconf/*.txt
+!models/relation_teacher_aug/*.json
+!models/relation_teacher_aug/*.txt
 data/
 __pycache__/
 *.pyc
