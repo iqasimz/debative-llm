@@ -36,9 +36,8 @@ yarl==1.20.0
 adapter-transformers
 streamlit
 transformers
-pandas
 networkx
 pyvis
-torch>=2.0.1+cpu; platform_system=="Linux"
-torchvision>=0.15.2+cpu; platform_system=="Linux"
 --find-links https://download.pytorch.org/whl/cpu/torch_stable.html
+torch==2.0.1
+torchvision==0.15.2
