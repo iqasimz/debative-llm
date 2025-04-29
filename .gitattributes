@@ -1,0 +1,4 @@
+models/role_student_v2_highconf/*.safetensors filter=lfs diff=lfs merge=lfs -text
+models/role_student_v2_highconf/*.bin filter=lfs diff=lfs merge=lfs -text
+*.safetensors filter=lfs diff=lfs merge=lfs -text
+*.bin        filter=lfs diff=lfs merge=lfs -text
