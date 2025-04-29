@@ -1,0 +1,23 @@
+# .gitignore
+data/
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+.DS_Store
+.venv38/
+venv/
+ENV/
+__pycache__/
+*.pyc
+tp_sample.txt
+evaluation/
+*.json
+*.csv
+*.txt
+is/
+now/
+python/
+3.8/
+models/
+checkpoints/
