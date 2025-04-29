@@ -39,5 +39,6 @@ transformers
 networkx
 pyvis
 --find-links https://download.pytorch.org/whl/cpu/torch_stable.html
-torch==2.0.1
-torchvision==0.15.2
+# CPU-only PyTorch for Linux (use a wheel that exists for Python 3.12)
+torch>=2.7.0+cpu; platform_system=="Linux"
+torchvision>=0.22.0+cpu; platform_system=="Linux"
