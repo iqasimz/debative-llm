@@ -26,7 +26,7 @@ def load_models():
 # Load once
 claim_tok, claim_mod = load_models()
 
-st.title("Logarg Stge1: Claim vs Premise")
+st.title("Logarg Stage1: Claim vs Premise")
 input_text = st.text_area("Enter sentences (one per line)", height=250)
 
 if st.button("Analyze"):
