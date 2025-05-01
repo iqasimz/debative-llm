@@ -47,3 +47,4 @@ python/
 3.8/
 checkpoints/
 !requirements.txt
+models/
