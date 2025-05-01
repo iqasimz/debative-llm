@@ -1,4 +1,6 @@
+import os
 import re
+import shutil
 import streamlit as st
 import pandas as pd
 import torch
@@ -12,9 +14,12 @@ PHRASE_KEYWORDS  = {"given that", "only when"}
 
 @st.cache_resource
 def load_models():
+    # 1) Remove any leftover local models folder
+    if os.path.isdir("models"):
+        shutil.rmtree("models")
     model_id = "iqasimz/role_student_v2_highconf"
-    tok = DistilBertTokenizerFast.from_pretrained(model_id)
-    mod = DistilBertForSequenceClassification.from_pretrained(model_id).eval()
+    tok = DistilBertTokenizerFast.from_pretrained(model_id, force_download=True)
+    mod = DistilBertForSequenceClassification.from_pretrained(model_id, force_download=True).eval()
     return tok, mod
 
 claim_tok, claim_mod = load_models()
