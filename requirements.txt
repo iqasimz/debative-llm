@@ -43,3 +43,4 @@ pyvis
 torch>=2.7.0+cpu; platform_system=="Linux"
 torchvision>=0.22.0+cpu; platform_system=="Linux"
 gdown>=4.6.4
+huggingface_hub>=0.14.1

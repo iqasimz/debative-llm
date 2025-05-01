@@ -1,6 +1,4 @@
-import os
 import re
-import shutil
 import streamlit as st
 import pandas as pd
 import torch
@@ -8,20 +6,24 @@ from transformers import (
     DistilBertTokenizerFast,
     DistilBertForSequenceClassification,
 )
+from huggingface_hub import snapshot_download
 
+# Heuristic keywords
 PREMISE_KEYWORDS = {"because", "if", "since", "due to", "therefore"}
 PHRASE_KEYWORDS  = {"given that", "only when"}
 
 @st.cache_resource
 def load_models():
-    # 1) Remove any leftover local models folder
-    if os.path.isdir("models"):
-        shutil.rmtree("models")
-    model_id = "iqasimz/role_student_v2_highconf"
-    tok = DistilBertTokenizerFast.from_pretrained(model_id, force_download=True)
-    mod = DistilBertForSequenceClassification.from_pretrained(model_id, force_download=True).eval()
+    # Download or load from cache the entire HF repo
+    repo_id = "iqasimz/role_student_v2_highconf"
+    local_dir = snapshot_download(repo_id, cache_dir="hf_cache")
+    
+    # Load tokenizer & model from the downloaded directory
+    tok = DistilBertTokenizerFast.from_pretrained(local_dir)
+    mod = DistilBertForSequenceClassification.from_pretrained(local_dir).eval()
     return tok, mod
 
+# Load once
 claim_tok, claim_mod = load_models()
 
 st.title("🔵 Debative-LLM Demo")
@@ -41,6 +43,7 @@ if st.button("Analyze"):
     for sent, prob in zip(sentences, probs):
         p_c, p_p = prob[0].item(), prob[1].item()
         label = "Claim" if p_c > p_p else "Premise"
+
         low, tokens = sent.lower(), re.findall(r"\b\w+\b", sent.lower())
         cond_kw = any(kw in tokens for kw in PREMISE_KEYWORDS) or any(ph in low for ph in PHRASE_KEYWORDS)
         has_comma = "," in low.split(" ",1)[1] if " " in low else False
