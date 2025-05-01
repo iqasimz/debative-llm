@@ -1,28 +1,54 @@
 # app.py
+# app.py
+import os
+import zipfile
 import re
+
 import streamlit as st
 import pandas as pd
 import torch
-import networkx as nx
-from pyvis.network import Network
 from transformers import (
     DistilBertTokenizerFast,
     DistilBertForSequenceClassification,
-    BertTokenizerFast,
-    BertForSequenceClassification,
 )
+import gdown
 
 # Heuristic single-word premise keywords
 PREMISE_KEYWORDS = {"because", "if", "since", "due to", "therefore"}
 # Heuristic multi-word premise phrases
 PHRASE_KEYWORDS  = {"given that", "only when"}
 
+# Paths & Drive IDs
+MODEL_DIR  = "models"
+ROLE_ZIP   = os.path.join(MODEL_DIR, "role_student_v2_highconf.zip")
+ROLE_DIR   = os.path.join(MODEL_DIR, "role_student_v2_highconf")
+# TODO: replace with your actual Google Drive file ID
+ROLE_ID    = "1kOUNmrq-rJvgeF3Xy-8rrOvslC1Wv6Ng"
+
+
+def fetch_and_unpack(path_dir: str, path_zip: str, drive_id: str):
+    """Download from Google Drive and unzip into path_dir, if not already."""
+    if not os.path.isdir(path_dir):
+        os.makedirs(path_dir, exist_ok=True)
+        url = f"https://drive.google.com/uc?id={drive_id}"
+        # download zip file
+        gdown.download(url, path_zip, quiet=False)
+        # unzip
+        with zipfile.ZipFile(path_zip, "r") as z:
+            z.extractall(path_dir)
+    return path_dir
+
 @st.cache_resource
 def load_models():
-    c_tok = DistilBertTokenizerFast.from_pretrained("models/role_student_v2_highconf", local_files_only=True)
-    c_mod = DistilBertForSequenceClassification.from_pretrained("models/role_student_v2_highconf", local_files_only=True).eval()
+    # 1. Fetch & unpack the role tagger
+    role_path = fetch_and_unpack(ROLE_DIR, ROLE_ZIP, ROLE_ID)
+
+    # 2. Load from the unpacked directory
+    c_tok = DistilBertTokenizerFast.from_pretrained(role_path)
+    c_mod = DistilBertForSequenceClassification.from_pretrained(role_path).eval()
     return (c_tok, c_mod)
 
+# Load once
 (claim_tok, claim_mod) = load_models()
 
 st.title("🔵 Debative-LLM Demo")

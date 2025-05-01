@@ -42,3 +42,4 @@ pyvis
 # CPU-only PyTorch for Linux (use a wheel that exists for Python 3.12)
 torch>=2.7.0+cpu; platform_system=="Linux"
 torchvision>=0.22.0+cpu; platform_system=="Linux"
+gdown
