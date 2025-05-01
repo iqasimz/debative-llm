@@ -1,28 +1,6 @@
 # .gitignore
 # Ignore all model folders by default
-models/*
-
-# But allow these two directories themselves
-!models/role_student_v2_highconf/
-!models/relation_teacher_aug/
-
-# Within each allowed dir, ignore everything
-models/role_student_v2_highconf/*
-models/relation_teacher_aug/*
-# allow weight files just this one time
-
-# Except these five files in each
-!models/role_student_v2_highconf/config.json
-!models/role_student_v2_highconf/tokenizer.json
-!models/role_student_v2_highconf/tokenizer_config.json
-!models/role_student_v2_highconf/vocab.txt
-!models/role_student_v2_highconf/special_tokens_map.json
-
-!models/relation_teacher_aug/config.json
-!models/relation_teacher_aug/tokenizer.json
-!models/relation_teacher_aug/tokenizer_config.json
-!models/relation_teacher_aug/vocab.txt
-!models/relation_teacher_aug/special_tokens_map.json
+models/
 # ignore stray pip-internal directories
 lib/
 data/
