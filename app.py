@@ -13,7 +13,7 @@ import gdown
 # Keys & paths
 MODEL_DIR   = "models"
 ROLE_DIR    = os.path.join(MODEL_DIR, "role_student_v2_highconf")
-ROLE_FOLDER = "https://drive.google.com/drive/u/1/folders/1k_meMCodgJ__NV2scVhgbtN7WdN_zehx"
+ROLE_FOLDER = "https://drive.google.com/drive/folders/1OhHRz99AKzQfYXc1iEGjItzxS3iwjAtJ?usp=share_link"
 
 @st.cache_resource
 def fetch_and_load_folder(drive_folder_url: str, local_dir: str):
