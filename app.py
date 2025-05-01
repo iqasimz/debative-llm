@@ -26,7 +26,7 @@ def load_models():
 # Load once
 claim_tok, claim_mod = load_models()
 
-st.title("🔵 Debative-LLM Demo")
+st.title("Logarg Stge1: Claim vs Premise")
 input_text = st.text_area("Enter sentences (one per line)", height=250)
 
 if st.button("Analyze"):
@@ -65,6 +65,6 @@ if st.button("Analyze"):
         })
 
     df = pd.DataFrame(records)
-    st.subheader("1️⃣ Claim vs. Premise")
+    st.subheader("Claim vs Premise")
     st.dataframe(df, use_container_width=True)
     st.success("Done!")
