@@ -26,3 +26,4 @@ python/
 checkpoints/
 !requirements.txt
 models/
+models/
